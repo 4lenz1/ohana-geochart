@@ -358,7 +358,7 @@ function createWorldModal(region) {
 
 
     const flag = document.createElement('img');
-    flag.src = 'https://countryflagsapi.com/png/' + region;
+    flag.src = `https://flagcdn.com/${region.toLowerCase()}.svg`;
     flag.style.marginBottom = '10px'
     flag.style.width = '100%'
     bodyContainer.appendChild(flag);
@@ -369,7 +369,13 @@ function createWorldModal(region) {
     for (var i = 0; i < 5; i++) {
         const avatar = document.createElement('img');
         avatar.classLis = "rounded-circle shadow-4";
+        avatar.classLis = "rounded-circle";
         avatar.style.width = '50px';
+        avatar.style.borderRadius = '50%';
+        avatar.style.margin= '0px 5px 0px 5px';
+        avatar.style.borderStyle = 'solid';
+        avatar.style.borderColor = '#B2C8DF'
+        avatar.style.borderWidth = '2px';
         avatar.setAttribute('alt', 'Avatar');
         const seed = +new Date() * i;
         avatar.src = `https://avatars.dicebear.com/api/${avatarTypeList[avatarType]}/${seed}.svg`
