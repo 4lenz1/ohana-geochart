@@ -277,7 +277,7 @@ function drawRegionsMap() {
         ['Vanuatu'],	 //	VU
         ['Venezuela (Bolivarian Republic of)'],	 //	VE
         ['Vietnam'],	 //	VN
-        ['Vatican City'],
+        ['Vatican City State'], // VA
         ['Virgin Islands (British)'],	 //	VG
         ['Virgin Islands (U.S.)'],	 //	VI
         ['Wallis and Futuna'],	 //	WF
@@ -290,7 +290,7 @@ function drawRegionsMap() {
     const options = {
         defaultColor: '#3cb371',
         backgroundColor: '#ebf7fe',
-        // region: 'IT',
+        // region: 'VA',
         // displayMode: 'markers',
         // colorAxis: {colors: ['green', 'blue']}
     };
@@ -299,6 +299,9 @@ function drawRegionsMap() {
     google.visualization.events.addListener(chart, 'regionClick', selectHandler);
     chart.draw(data, options);
 }
+
+
+
 
 function createWorldModal(region) {
 
