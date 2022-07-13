@@ -330,6 +330,7 @@ function createWorldModal(region) {
 
     const header = document.createElement('div');
     header.classList = 'modal-header text-center';
+    header.style.backgroundColor = '#ebf7fe';
 
     const closeBtn = document.createElement('button');
     closeBtn.id = 'close'
@@ -348,6 +349,7 @@ function createWorldModal(region) {
 
     const body = document.createElement('body')
     body.className = 'modal-body';
+    body.style.backgroundColor = '#ebf7fe'
 
 
 
@@ -388,9 +390,11 @@ function createWorldModal(region) {
 
     const navButton = document.createElement('button');
     navButton.type = 'button';
-    navButton.classList = 'tn btn-primary w-100';
+    navButton.classList = 'btn btn-primary w-100';
+    navButton.style.borderRadius = '25px';
     navButton.innerText = intl.of(region) + 'のページへ';
     bodyContainer.appendChild(navButton);
+    navButton.style.marginTop = '5px';
 
     body.appendChild(bodyContainer);
 

@@ -142,6 +142,8 @@ function createJapanModal(code) {
 
     const header = document.createElement('div');
     header.classList = 'modal-header text-center';
+    header.style.backgroundColor = '#ebf7fe';
+
 
     const closeBtn = document.createElement('button');
     closeBtn.id = 'close'
@@ -160,6 +162,7 @@ function createJapanModal(code) {
 
     const body = document.createElement('body')
     body.className = 'modal-body';
+    body.style.backgroundColor = '#ebf7fe'
 
 
     const bodyContainer = document.createElement('div');
@@ -194,8 +197,9 @@ function createJapanModal(code) {
 
     const navButton = document.createElement('button');
     navButton.type = 'button';
-    navButton.style.borderRadius = '15px';
-    navButton.classList = 'btn-primary w-100';
+    navButton.style.marginTop = '5px';
+    navButton.style.borderRadius = '25px';
+    navButton.classList = 'btn btn-primary w-100';
     navButton.innerText = intl.name + 'のページへ';
     bodyContainer.appendChild(navButton);
 
