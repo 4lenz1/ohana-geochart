@@ -366,8 +366,8 @@ function createWorldModal(region) {
     bodyContainer.appendChild(flag);
 
 
-    const avatarTypeList = ['bottts', 'avataaars', 'identicon', 'jdenticon', 'gridy'];
-    const avatarType = Math.floor(Math.random() * 4);
+    const avatarTypeList = [ 'bottts', 'avataaars', 'identicon', 'jdenticon', 'gridy' ,'croodles' , 'adventurer' , 'big-smile' , 'personas'];
+    const avatarType = Math.floor(Math.random() *( avatarTypeList.length ) );
     for (var i = 0; i < 5; i++) {
         const avatar = document.createElement('img');
         avatar.classLis = "rounded-circle shadow-4";
