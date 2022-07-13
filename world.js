@@ -355,7 +355,7 @@ function createWorldModal(region) {
 
     const bodyContainer = document.createElement('div');
     bodyContainer.classList = 'container text-center';
-
+    // bodyContainer.style.background = '#ebf7fe';
 
     const flag = document.createElement('img');
     flag.src = `https://flagcdn.com/${region.toLowerCase()}.svg`;
@@ -372,7 +372,7 @@ function createWorldModal(region) {
         avatar.classLis = "rounded-circle";
         avatar.style.width = '50px';
         avatar.style.borderRadius = '50%';
-        avatar.style.margin= '0px 5px 0px 5px';
+        avatar.style.margin = '0px 5px 0px 5px';
         avatar.style.borderStyle = 'solid';
         avatar.style.borderColor = '#B2C8DF'
         avatar.style.borderWidth = '2px';
