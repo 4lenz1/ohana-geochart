@@ -6,7 +6,56 @@ google.charts.load('current', {
 google.charts.setOnLoadCallback(drawJapanRegionsMap);
 
 var japanList = [];
-
+const japanCodes = [
+    ["都道縣府"],
+    ["愛知"],
+    ["秋田"],
+    ["青森"],
+    ["千葉"],
+    ["愛媛"],
+    ["福井"],
+    ["福岡"],
+    ["福島"],
+    ["岐阜"],
+    ["群馬"],
+    ["広島"],
+    ["北海道"],
+    ["兵庫"],
+    ["茨城"],
+    ["石川"],
+    ["岩手"],
+    ["香川"],
+    ["鹿児島"],
+    ["神奈川"],
+    ["高知"],
+    ["熊本"],
+    ["京都"],
+    ["三重"],
+    ["宮城"],
+    ["宮崎"],
+    ["長野"],
+    ["長崎"],
+    ["奈良"],
+    ["新潟"],
+    ["大分"],
+    ["岡山"],
+    ["沖縄"],
+    ["大阪"],
+    ["佐賀"],
+    ["埼玉"],
+    ["滋賀"],
+    ["島根"],
+    ["静岡"],
+    ["栃木"],
+    ["徳島"],
+    ["東京"],
+    ["鳥取"],
+    ["富山"],
+    ["和歌山"],
+    ["山形"],
+    ["山口"],
+    ["山梨"],
+];
 fetch("japan.json")
     .then(response => response.json())
     .then((json) => {
@@ -17,6 +66,7 @@ fetch("japan.json")
 
 document.getElementById('select-japan').addEventListener('change', function () {
     createJapanModal(this.value);
+
 });
 
 
@@ -40,60 +90,12 @@ function createSelectJapan() {
 }
 function selectJapanHandler(region) {
     createJapanModal(region.region);
+
 }
 
 function drawJapanRegionsMap() {
-    const codes = [
-        ["都道縣府"],
-        ["愛知"],
-        ["秋田"],
-        ["青森"],
-        ["千葉"],
-        ["愛媛"],
-        ["福井"],
-        ["福岡"],
-        ["福島"],
-        ["岐阜"],
-        ["群馬"],
-        ["広島"],
-        ["北海道"],
-        ["兵庫"],
-        ["茨城"],
-        ["石川"],
-        ["岩手"],
-        ["香川"],
-        ["鹿児島"],
-        ["神奈川"],
-        ["高知"],
-        ["熊本"],
-        ["京都"],
-        ["三重"],
-        ["宮城"],
-        ["宮崎"],
-        ["長野"],
-        ["長崎"],
-        ["奈良"],
-        ["新潟"],
-        ["大分"],
-        ["岡山"],
-        ["沖縄"],
-        ["大阪"],
-        ["佐賀"],
-        ["埼玉"],
-        ["滋賀"],
-        ["島根"],
-        ["静岡"],
-        ["栃木"],
-        ["徳島"],
-        ["東京"],
-        ["鳥取"],
-        ["富山"],
-        ["和歌山"],
-        ["山形"],
-        ["山口"],
-        ["山梨"],
-    ];
-    const data = google.visualization.arrayToDataTable(codes);
+   
+    const data = google.visualization.arrayToDataTable(japanCodes);
     const options = {
         defaultColor: '#3cb371',
         region: 'JP',
