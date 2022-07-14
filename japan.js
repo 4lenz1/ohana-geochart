@@ -184,12 +184,13 @@ var japanChart = japanRoot.container.children.push(am5map.MapChart.new(japanRoot
 
 
 // Create polygon series
-var japanPolygonSeries = japanChart.series.push(am5map.MapPolygonSeries.new(japanRoot, {
+var japanPolygonSeries = japanChart.series.push(
+    am5map.MapPolygonSeries.new(japanRoot, {
     geoJSON: am5geodata_japanLow,
+    geodataNames: am5geodata_lang_JA
     // valueField: "value",
     // calculateAggregates: true
 }));
-
 
 
 japanPolygonSeries.mapPolygons.template.setAll({
