@@ -71,7 +71,7 @@ function createJapanModal(code) {
     closeBtn.type = 'button';
     closeBtn.setAttribute('data-bs-dismiss', 'modal');
     closeBtn.setAttribute('aria-label', 'Close');
-    closeBtn.onclick = closeModal;
+    closeBtn.onclick = closeJapanModal;
 
     const title = document.createElement('h5');
     title.classList = 'modal-title w-100';
@@ -183,13 +183,14 @@ var japanChart = japanRoot.container.children.push(am5map.MapChart.new(japanRoot
 
 
 
+
 // Create polygon series
 var japanPolygonSeries = japanChart.series.push(
     am5map.MapPolygonSeries.new(japanRoot, {
     geoJSON: am5geodata_japanLow,
-    geodataNames: am5geodata_lang_JA
-    // valueField: "value",
-    // calculateAggregates: true
+    geodataNames: am5geodata_lang_JA,
+    valueField: "value",
+    calculateAggregates: true
 }));
 
 
@@ -237,3 +238,10 @@ japanChart.chartContainer.get("background").events.on("click", function () {
 // Make stuff animate on load
 japanChart.appear(1000, 100);
 
+
+function closeJapanModal() {
+    const modal = new bootstrap.Modal(document.getElementById('modal'));
+    modal.hide();
+    // document.querySelector('#modal').remove();
+
+}
