@@ -1,61 +1,5 @@
-google.charts.load('current', {
-    'packages': ['geochart'],
-    'mapsApiKey': 'AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY'
-});
 
-google.charts.setOnLoadCallback(drawJapanRegionsMap);
 
-var japanList = [];
-const japanCodes = [
-    ["都道縣府"],
-    ["愛知"],
-    ["秋田"],
-    ["青森"],
-    ["千葉"],
-    ["愛媛"],
-    ["福井"],
-    ["福岡"],
-    ["福島"],
-    ["岐阜"],
-    ["群馬"],
-    ["広島"],
-    ["北海道"],
-    ["兵庫"],
-    ["茨城"],
-    ["石川"],
-    ["岩手"],
-    ["香川"],
-    ["鹿児島"],
-    ["神奈川"],
-    ["高知"],
-    ["熊本"],
-    ["京都"],
-    ["三重"],
-    ["宮城"],
-    ["宮崎"],
-    ["長野"],
-    ["長崎"],
-    ["奈良"],
-    ["新潟"],
-    ["大分"],
-    ["岡山"],
-    ["沖縄"],
-    ["大阪"],
-    ["佐賀"],
-    ["埼玉"],
-    ["滋賀"],
-    ["島根"],
-    ["静岡"],
-    ["栃木"],
-    ["徳島"],
-    ["東京"],
-    ["鳥取"],
-    ["富山"],
-    ["和歌山"],
-    ["山形"],
-    ["山口"],
-    ["山梨"],
-];
 fetch("japan.json")
     .then(response => response.json())
     .then((json) => {
@@ -63,10 +7,8 @@ fetch("japan.json")
         createSelectJapan();
     });
 
-
 document.getElementById('select-japan').addEventListener('change', function () {
     createJapanModal(this.value);
-
 });
 
 
@@ -88,33 +30,11 @@ function createSelectJapan() {
     instance.update();
 
 }
-function selectJapanHandler(region) {
-    createJapanModal(region.region);
-
-}
-
-function drawJapanRegionsMap() {
-   
-    const data = google.visualization.arrayToDataTable(japanCodes);
-    const options = {
-        defaultColor: '#3cb371',
-        region: 'JP',
-        backgroundColor: '#ebf7fe',
-        // displayMode: 'markers',
-        resolution: 'provinces',
-    };
-    const chart = new google.visualization.GeoChart(document.getElementById('japan-map'));
-
-    google.visualization.events.addListener(chart, 'regionClick', selectJapanHandler);
-    chart.draw(data, options);
-}
 
 function createJapanModal(code) {
 
-    console.log(code);
+    console.log('code ',code);
 
-
-    // console.log(japanList);
 
 
     const intl = japanList.find(x => x.code === code);
@@ -177,15 +97,15 @@ function createJapanModal(code) {
     bodyContainer.appendChild(flag);
 
 
-    const avatarTypeList = [ 'bottts', 'avataaars', 'identicon', 'jdenticon', 'gridy' ,'croodles' , 'adventurer' , 'big-smile' , 'personas'];
-    const avatarType = Math.floor(Math.random() *( avatarTypeList.length ) );
+    const avatarTypeList = ['bottts', 'avataaars', 'identicon', 'jdenticon', 'gridy', 'croodles', 'adventurer', 'big-smile', 'personas'];
+    const avatarType = Math.floor(Math.random() * (avatarTypeList.length));
 
     for (var i = 0; i < 5; i++) {
         const avatar = document.createElement('img');
         avatar.classLis = "rounded-circle";
         avatar.style.width = '50px';
         avatar.style.borderRadius = '50%';
-        avatar.style.margin= '0px 5px 0px 5px';
+        avatar.style.margin = '0px 5px 0px 5px';
         avatar.style.borderStyle = 'solid';
         avatar.style.borderColor = '#B2C8DF'
         avatar.style.borderWidth = '2px';
@@ -218,7 +138,7 @@ function createJapanModal(code) {
 
 
 
-    document.body.querySelector('#japan-map').after(modal);
+    document.body.querySelector('#chart-japan').after(modal);
 
     const modalEl = new bootstrap.Modal(document.getElementById('modal'));
     modalEl.show();
@@ -235,4 +155,84 @@ function closeJapanModal() {
     // document.querySelector('#modal').remove();
 
 }
+
+
+
+
+
+
+
+
+
+
+// Create root
+var japanRoot = am5.Root.new("chart-japan");
+
+// Set themes
+japanRoot.setThemes([
+    am5themes_Animated.new(japanRoot)
+]);
+
+// Create chart
+var japanChart = japanRoot.container.children.push(am5map.MapChart.new(japanRoot, {
+    panX: "translateX",
+    panY: "translateY",
+    projection: am5map.geoMercator(),
+    // layout: japanRoot.horizontalLayout
+}));
+
+
+
+// Create polygon series
+var japanPolygonSeries = japanChart.series.push(am5map.MapPolygonSeries.new(japanRoot, {
+    geoJSON: am5geodata_japanLow,
+    // valueField: "value",
+    // calculateAggregates: true
+}));
+
+
+
+japanPolygonSeries.mapPolygons.template.setAll({
+    tooltipText: "{name}",
+    toggleKey: "active",
+    interactive: true
+});
+japanPolygonSeries.mapPolygons.template.states.create("hover", {
+    fill: japanRoot.interfaceColors.get("primaryButtonHover")
+});
+
+japanPolygonSeries.mapPolygons.template.states.create("active", {
+    fill: japanRoot.interfaceColors.get("primaryButtonHover")
+});
+
+
+var japanPreviousPolygon;
+
+japanPolygonSeries.mapPolygons.template.on("active", function (active, target) {
+    if (japanPreviousPolygon && japanPreviousPolygon != target) {
+        japanPreviousPolygon.set("active", false);
+    }
+    if (target.get("active")) {
+        createJapanModal(target.dataItem.dataContext.id);
+        japanPolygonSeries.zoomToDataItem(target.dataItem);
+    }
+    else {
+        japanChart.goHome();
+    }
+    japanPreviousPolygon = target;
+});
+  
+// Add zoom control
+// https://www.amcharts.com/docs/v5/charts/map-chart/map-pan-zoom/#Zoom_control
+japanChart.set("zoomControl", am5map.ZoomControl.new(japanRoot, {}));
+
+
+// Set clicking on "water" to zoom out
+japanChart.chartContainer.get("background").events.on("click", function () {
+    japanChart.goHome();
+})
+
+
+// Make stuff animate on load
+japanChart.appear(1000, 100);
 
