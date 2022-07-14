@@ -128,7 +128,7 @@ function createJapanModal(code) {
         .createElement('div');
     modal.id = 'modal';
     modal.setAttribute('role', 'dialog');
-    modal.classList = 'modal fade rounded-20';
+    modal.classList = 'modal fade';
     modal.setAttribute('aria-hidden', 'true');
     modal.setAttribute('aria-labelledby', 'modal')
 
@@ -138,7 +138,7 @@ function createJapanModal(code) {
 
 
     const content = document.createElement('div');
-    content.className = 'modal-content rounded-25';
+    content.className = 'modal-content';
 
     const header = document.createElement('div');
     header.classList = 'modal-header text-center';
