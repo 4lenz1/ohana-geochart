@@ -25,14 +25,16 @@ export class Modal {
             document.querySelector('#modal-subtitle').innerHTML = name.english;
 
             // update flag 
-            document.querySelector('#modal-flag').src = this.generateFlagSrc(region);
+            const flag = this.generateFlagEl(region);
+            document.querySelector('#modal-flag').replaceWith(flag);
 
-            const button = document.querySelector('#nav-button');
-            button.onclick = () => {
-                window.location.href = this.generateButtonUrl(code);
-            }
-            button.innerHTML = this.generateButtonInfo(region);
+            const button = this.generateButtonEl(region);
+            document.querySelector('#nav-button').replaceWith(button);
 
+            //update talk number 
+
+            const talk = this.generateTalk(Math.floor(Math.random() * 100))
+            document.querySelector('#modal-talk').replaceWith(talk);
 
             const modalEl = new bootstrap.Modal(checkModal);
             modalEl.show();
@@ -106,7 +108,7 @@ export class Modal {
         const buttonRow = document.createElement('div');
         buttonRow.classList = 'row';
 
-        const buttonCol =  document.createElement('div');
+        const buttonCol = document.createElement('div');
         buttonCol.classList = 'col-md-12';
         const navButton = this.generateButtonEl(region);
         buttonCol.appendChild(navButton);
@@ -119,8 +121,12 @@ export class Modal {
             bodyContainer.appendChild(avatar);
         }
 
-        body.appendChild(bodyContainer);
+        // talk
+        const talk = this.generateTalk(Math.floor(Math.random() * 100));
+        bodyContainer.appendChild(talk);
 
+
+        body.appendChild(bodyContainer);
 
         // const footer = document.createElement('div');
         // footer.className = 'modal-footer';
@@ -141,6 +147,16 @@ export class Modal {
     }
 
 
+    generateTalk(number) {
+        const text = document.createElement('h5');
+        text.classList = 'w-100';
+        text.style.textAlign = 'center';
+        text.id = 'modal-talk';
+        text.style.marginTop = '10px';
+        text.innerText = `とーく(${number})`;
+
+        return text
+    }
     generateAvatar(index) {
         const avatarTypeList = ['bottts', 'avataaars', 'identicon', 'jdenticon', 'gridy', 'croodles', 'adventurer', 'big-smile', 'personas'];
         const avatarType = Math.floor(Math.random() * (avatarTypeList.length));
