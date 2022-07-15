@@ -9,6 +9,9 @@ fetch("japan.json")
 
 document.getElementById('select-japan').addEventListener('change', function () {
     createJapanModal(this.value);
+
+    let dataItem = japanPolygonSeries.getDataItemById(this.value);
+    japanPolygonSeries.zoomToDataItem(dataItem);
 });
 
 
@@ -167,7 +170,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initialJapanMap();
 });
 
-
+var japanPolygonSeries;
 
 function initialJapanMap() {
     // Create root
@@ -191,7 +194,7 @@ function initialJapanMap() {
 
 
     // Create polygon series
-    var japanPolygonSeries = japanChart.series.push(
+    japanPolygonSeries = japanChart.series.push(
         am5map.MapPolygonSeries.new(japanRoot, {
             geoJSON: am5geodata_japanLow,
             geodataNames: am5geodata_lang_JA,

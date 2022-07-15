@@ -8,6 +8,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 document.getElementById('select-world').addEventListener('change', function () {
     createWorldModal(this.value);
+
+    let dataItem = polygonSeries.getDataItemById(this.value);
+    polygonSeries.zoomToDataItem(dataItem);
 });
 
 
@@ -151,7 +154,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initialWorldMap();
 });
 
-
+var polygonSeries;
 
 
 function initialWorldMap() {
@@ -179,7 +182,7 @@ function initialWorldMap() {
 
     // Create main polygon series for countries
     // https://www.amcharts.com/docs/v5/charts/map-chart/map-polygon-series/
-    var polygonSeries = chart.series.push(am5map.MapPolygonSeries.new(root, {
+     polygonSeries = chart.series.push(am5map.MapPolygonSeries.new(root, {
         geoJSON: am5geodata_worldLow,
         exclude: ["AQ"]
     }));
