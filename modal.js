@@ -21,9 +21,8 @@ export class Modal {
         if (checkModal) {
             // update modal title  
             const name = this.generateTitleText(region);
-
-            document.querySelector('#modal-title').innerHTML = name.english + ' ' + name.japanese;
-
+            document.querySelector('#modal-title').innerHTML = name.japanese;
+            document.querySelector('#modal-subtitle').innerHTML = name.english;
 
             // update flag 
             document.querySelector('#modal-flag').src = this.generateFlagSrc(region);
@@ -48,7 +47,6 @@ export class Modal {
 
     }
     createModal(region) {
-        console.log('create modal',)
 
         const modal = document
             .createElement('div');
@@ -59,7 +57,7 @@ export class Modal {
         modal.setAttribute('aria-labelledby', 'modal')
 
         const dialog = document.createElement('div');
-        dialog.classList = 'modal-dialog modal-dialog-centered';
+        dialog.classList = 'modal-dialog modal-dialog-centered modal-lg';
         dialog.setAttribute('role', 'document');
 
 
@@ -67,19 +65,20 @@ export class Modal {
         content.className = 'modal-content';
 
         const header = document.createElement('div');
-        header.classList = 'modal-header text-center';
+        header.classList = 'modal-header text-center row';
         header.style.backgroundColor = '#ebf7fe';
 
-        const closeBtn = document.createElement('button');
-        closeBtn.id = 'close'
-        closeBtn.className = 'btn-close';
-        closeBtn.type = 'button';
-        closeBtn.setAttribute('data-bs-dismiss', 'modal');
-        closeBtn.setAttribute('aria-label', 'Close');
-        closeBtn.onclick = this.closeModal;
+        //TODO: disable temp
+        // const closeBtn = document.createElement('button');
+        // closeBtn.id = 'close'
+        // closeBtn.className = 'btn-close';
+        // closeBtn.type = 'button';
+        // closeBtn.setAttribute('data-bs-dismiss', 'modal');
+        // closeBtn.setAttribute('aria-label', 'Close');
+        // closeBtn.onclick = this.closeModal;
 
-        const title = this.generateTitleEl(region);
-
+        const title = this.generateTitleEl(region, 'modal-title', 'h5');
+        const subTitle = this.generateTitleEl(region, 'modal-subtitle', 'p');
 
         const body = document.createElement('body')
         body.className = 'modal-body';
@@ -95,17 +94,27 @@ export class Modal {
 
 
         // generate flag
+        const flagRow = document.createElement('div');
+        flagRow.classList = 'row';
         const flag = this.generateFlagEl(region);
-        bodyContainer.appendChild(flag);
+        flagRow.appendChild(flag)
+        bodyContainer.appendChild(flagRow);
 
 
 
         // generate button
+        const buttonRow = document.createElement('div');
+        buttonRow.classList = 'row';
+
+        const buttonCol =  document.createElement('div');
+        buttonCol.classList = 'col-md-12';
         const navButton = this.generateButtonEl(region);
-        bodyContainer.appendChild(navButton);
+        buttonCol.appendChild(navButton);
+        buttonRow.appendChild(buttonCol);
+        bodyContainer.appendChild(buttonRow);
 
         //generate avatar 
-        for (var i = 0; i < 5; i++) {
+        for (var i = 0; i < 7; i++) {
             const avatar = this.generateAvatar(i);
             bodyContainer.appendChild(avatar);
         }
@@ -115,11 +124,10 @@ export class Modal {
 
         // const footer = document.createElement('div');
         // footer.className = 'modal-footer';
-
         header.appendChild(title);
-        header.appendChild(closeBtn);
+        header.appendChild(subTitle);
+        // header.appendChild(closeBtn);
         content.appendChild(header);
-        // content.appendChild(footer);
         content.appendChild(body);
         dialog.appendChild(content);
         modal.appendChild(dialog);
@@ -155,6 +163,7 @@ export class Modal {
     }
 
     generateFlagEl(code) {
+
         console.log('region', code);
         const flag = document.createElement('img');
         flag.id = 'modal-flag';
@@ -164,6 +173,8 @@ export class Modal {
         flag.style.width = '100%';
         flag.style.maxHeight = '250px';
         flag.style.objectFit = 'contain';
+
+
 
         return flag;
     }
@@ -182,8 +193,9 @@ export class Modal {
         const navButton = document.createElement('button');
         navButton.type = 'button';
         navButton.id = 'nav-button'
-        navButton.classList = 'btn btn-primary w-100';
-        navButton.style.borderRadius = '25px';
+        navButton.classList = 'btn btn-primary';
+        navButton.style.width = '40%';
+        navButton.style.borderRadius = '10px';
         navButton.style.marginTop = '5px';
         navButton.style.marginBottom = '10px'
         navButton.innerText = this.generateButtonInfo(code);
@@ -222,14 +234,24 @@ export class Modal {
 
 
 
-    generateTitleEl(code) {
-        const title = document.createElement('h5');
+    generateTitleEl(code, id, headingSize) {
+        const title = document.createElement(headingSize);
         title.classList = 'modal-title w-100';
-        title.style.textAlign = 'center'
-        title.id = 'modal-title';
+        title.style.textAlign = 'center';
+        title.id = id;
         const name = this.generateTitleText(code);
-        console.log(name)
-        title.innerText = name.japanese + '  ' + name.english;
+        if (headingSize === 'h5') {
+            // title
+            title.innerText = name.japanese;
+            title.style.fontWeight = '900';
+            title.style.fontSize = '28px';
+
+        } else {
+            // sub title
+            title.innerText = name.english;
+            // title.style.fontWeight = '900';
+
+        }
 
         return title
     }
@@ -249,8 +271,6 @@ export class Modal {
         } else {
             const region = this.japanList.find(x => x.code === code);
             return { 'japanese': region.name, 'english': region.english };
-
-            // return region.name;
         }
     }
 
