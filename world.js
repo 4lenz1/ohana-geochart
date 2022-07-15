@@ -50,6 +50,8 @@ function initialWorldMap() {
     // https://www.amcharts.com/docs/v5/charts/map-chart/map-polygon-series/
     polygonSeries = chart.series.push(am5map.MapPolygonSeries.new(root, {
         geoJSON: am5geodata_worldLow,
+        geodataNames: am5geodata_lang_JA,
+
         exclude: ["AQ"]
     }));
 
