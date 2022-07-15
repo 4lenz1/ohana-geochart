@@ -76,8 +76,8 @@ function createWorldModal(region) {
     bodyContainer.appendChild(flag);
 
 
-    const avatarTypeList = [ 'bottts', 'avataaars', 'identicon', 'jdenticon', 'gridy' ,'croodles' , 'adventurer' , 'big-smile' , 'personas'];
-    const avatarType = Math.floor(Math.random() *( avatarTypeList.length ) );
+    const avatarTypeList = ['bottts', 'avataaars', 'identicon', 'jdenticon', 'gridy', 'croodles', 'adventurer', 'big-smile', 'personas'];
+    const avatarType = Math.floor(Math.random() * (avatarTypeList.length));
     for (var i = 0; i < 5; i++) {
         const avatar = document.createElement('img');
         avatar.classLis = "rounded-circle shadow-4";
@@ -147,77 +147,85 @@ function closeModal() {
 
 
 
-
-
-// Create root element
-// https://www.amcharts.com/docs/v5/getting-started/#Root_element
-var root = am5.Root.new("chart-world");
-
-
-// Set themes
-// https://www.amcharts.com/docs/v5/concepts/themes/
-root.setThemes([
-  am5themes_Animated.new(root)
-]);
-
-
-// Create the map chart
-// https://www.amcharts.com/docs/v5/charts/map-chart/
-var chart = root.container.children.push(am5map.MapChart.new(root, {
-  panX: "translateX",
-  panY: "translateY",
-  projection: am5map.geoMercator()
-}));
-
-
-// Create main polygon series for countries
-// https://www.amcharts.com/docs/v5/charts/map-chart/map-polygon-series/
-var polygonSeries = chart.series.push(am5map.MapPolygonSeries.new(root, {
-  geoJSON: am5geodata_worldLow,
-  exclude: ["AQ"]
-}));
-
-polygonSeries.mapPolygons.template.setAll({
-  tooltipText: "{name}",
-  toggleKey: "active",
-  interactive: true
-});
-
-polygonSeries.mapPolygons.template.states.create("hover", {
-  fill: root.interfaceColors.get("primaryButtonHover")
-});
-
-polygonSeries.mapPolygons.template.states.create("active", {
-  fill: root.interfaceColors.get("primaryButtonHover")
-});
-
-var previousPolygon;
-
-polygonSeries.mapPolygons.template.on("active", function (active, target) {
-  if (previousPolygon && previousPolygon != target) {
-    previousPolygon.set("active", false);
-  }
-  if (target.get("active")) {
-    polygonSeries.zoomToDataItem(target.dataItem );
-    createWorldModal(target.dataItem.dataContext.id);
-  }
-  else {
-    chart.goHome();
-  }
-  previousPolygon = target;
+document.addEventListener("DOMContentLoaded", () => {
+    initialWorldMap();
 });
 
 
-// Add zoom control
-// https://www.amcharts.com/docs/v5/charts/map-chart/map-pan-zoom/#Zoom_control
-chart.set("zoomControl", am5map.ZoomControl.new(root, {}));
 
 
-// Set clicking on "water" to zoom out
-chart.chartContainer.get("background").events.on("click", function () {
-  chart.goHome();
-})
+function initialWorldMap() {
+
+    // Create root element
+    // https://www.amcharts.com/docs/v5/getting-started/#Root_element
+    var root = am5.Root.new("chart-world");
 
 
-// Make stuff animate on load
-chart.appear(1000, 100);
+    // Set themes
+    // https://www.amcharts.com/docs/v5/concepts/themes/
+    root.setThemes([
+        am5themes_Animated.new(root)
+    ]);
+
+
+    // Create the map chart
+    // https://www.amcharts.com/docs/v5/charts/map-chart/
+    var chart = root.container.children.push(am5map.MapChart.new(root, {
+        panX: "translateX",
+        panY: "translateY",
+        projection: am5map.geoMercator()
+    }));
+
+
+    // Create main polygon series for countries
+    // https://www.amcharts.com/docs/v5/charts/map-chart/map-polygon-series/
+    var polygonSeries = chart.series.push(am5map.MapPolygonSeries.new(root, {
+        geoJSON: am5geodata_worldLow,
+        exclude: ["AQ"]
+    }));
+
+    polygonSeries.mapPolygons.template.setAll({
+        tooltipText: "{name}",
+        toggleKey: "active",
+        interactive: true
+    });
+
+    polygonSeries.mapPolygons.template.states.create("hover", {
+        fill: root.interfaceColors.get("primaryButtonHover")
+    });
+
+    polygonSeries.mapPolygons.template.states.create("active", {
+        fill: root.interfaceColors.get("primaryButtonHover")
+    });
+
+    var previousPolygon;
+
+    polygonSeries.mapPolygons.template.on("active", function (active, target) {
+        if (previousPolygon && previousPolygon != target) {
+            previousPolygon.set("active", false);
+        }
+        if (target.get("active")) {
+            polygonSeries.zoomToDataItem(target.dataItem);
+            createWorldModal(target.dataItem.dataContext.id);
+        }
+        else {
+            chart.goHome();
+        }
+        previousPolygon = target;
+    });
+
+
+    // Add zoom control
+    // https://www.amcharts.com/docs/v5/charts/map-chart/map-pan-zoom/#Zoom_control
+    chart.set("zoomControl", am5map.ZoomControl.new(root, {}));
+
+
+    // Set clicking on "water" to zoom out
+    chart.chartContainer.get("background").events.on("click", function () {
+        chart.goHome();
+    })
+
+
+    // Make stuff animate on load
+    chart.appear(1000, 100);
+}

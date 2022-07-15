@@ -33,7 +33,7 @@ function createSelectJapan() {
 
 function createJapanModal(code) {
 
-    console.log('code ',code);
+    console.log('code ', code);
 
 
 
@@ -163,80 +163,88 @@ function closeJapanModal() {
 
 
 
-
-
-// Create root
-var japanRoot = am5.Root.new("chart-japan");
-
-// Set themes
-japanRoot.setThemes([
-    am5themes_Animated.new(japanRoot)
-]);
-
-// Create chart
-var japanChart = japanRoot.container.children.push(am5map.MapChart.new(japanRoot, {
-    panX: "translateX",
-    panY: "translateY",
-    projection: am5map.geoMercator(),
-    // layout: japanRoot.horizontalLayout
-}));
-
-
-
-
-// Create polygon series
-var japanPolygonSeries = japanChart.series.push(
-    am5map.MapPolygonSeries.new(japanRoot, {
-    geoJSON: am5geodata_japanLow,
-    geodataNames: am5geodata_lang_JA,
-    valueField: "value",
-    calculateAggregates: true
-}));
-
-
-japanPolygonSeries.mapPolygons.template.setAll({
-    tooltipText: "{name}",
-    toggleKey: "active",
-    interactive: true
-});
-japanPolygonSeries.mapPolygons.template.states.create("hover", {
-    fill: japanRoot.interfaceColors.get("primaryButtonHover")
-});
-
-japanPolygonSeries.mapPolygons.template.states.create("active", {
-    fill: japanRoot.interfaceColors.get("primaryButtonHover")
+document.addEventListener("DOMContentLoaded", () => {
+    initialJapanMap();
 });
 
 
-var japanPreviousPolygon;
 
-japanPolygonSeries.mapPolygons.template.on("active", function (active, target) {
-    if (japanPreviousPolygon && japanPreviousPolygon != target) {
-        japanPreviousPolygon.set("active", false);
-    }
-    if (target.get("active")) {
-        createJapanModal(target.dataItem.dataContext.id);
-        japanPolygonSeries.zoomToDataItem(target.dataItem);
-    }
-    else {
+function initialJapanMap() {
+    // Create root
+    var japanRoot = am5.Root.new("chart-japan");
+
+    // Set themes
+    japanRoot.setThemes([
+        am5themes_Animated.new(japanRoot)
+    ]);
+
+    // Create chart
+    var japanChart = japanRoot.container.children.push(am5map.MapChart.new(japanRoot, {
+        panX: "translateX",
+        panY: "translateY",
+        // maxPanOut: 1,
+        // projection: am5map.geoMercator(),
+        // layout: japanRoot.horizontalLayout
+    }));
+
+
+
+
+    // Create polygon series
+    var japanPolygonSeries = japanChart.series.push(
+        am5map.MapPolygonSeries.new(japanRoot, {
+            geoJSON: am5geodata_japanLow,
+            geodataNames: am5geodata_lang_JA,
+            valueField: "value",
+            calculateAggregates: true
+        }));
+
+
+    japanPolygonSeries.mapPolygons.template.setAll({
+        tooltipText: "{name}",
+        toggleKey: "active",
+        interactive: true
+    });
+    japanPolygonSeries.mapPolygons.template.states.create("hover", {
+        fill: japanRoot.interfaceColors.get("primaryButtonHover")
+    });
+
+    japanPolygonSeries.mapPolygons.template.states.create("active", {
+        fill: japanRoot.interfaceColors.get("primaryButtonHover")
+    });
+
+
+    var japanPreviousPolygon;
+
+    japanPolygonSeries.mapPolygons.template.on("active", function (active, target) {
+        if (japanPreviousPolygon && japanPreviousPolygon != target) {
+            japanPreviousPolygon.set("active", false);
+        }
+        if (target.get("active")) {
+            createJapanModal(target.dataItem.dataContext.id);
+            japanPolygonSeries.zoomToDataItem(target.dataItem);
+        }
+        else {
+            japanChart.goHome();
+        }
+        japanPreviousPolygon = target;
+    });
+
+    // Add zoom control
+    // https://www.amcharts.com/docs/v5/charts/map-chart/map-pan-zoom/#Zoom_control
+    japanChart.set("zoomControl", am5map.ZoomControl.new(japanRoot, {}));
+
+
+    // Set clicking on "water" to zoom out
+    japanChart.chartContainer.get("background").events.on("click", function () {
         japanChart.goHome();
-    }
-    japanPreviousPolygon = target;
-});
-  
-// Add zoom control
-// https://www.amcharts.com/docs/v5/charts/map-chart/map-pan-zoom/#Zoom_control
-japanChart.set("zoomControl", am5map.ZoomControl.new(japanRoot, {}));
+    })
 
 
-// Set clicking on "water" to zoom out
-japanChart.chartContainer.get("background").events.on("click", function () {
-    japanChart.goHome();
-})
+    // Make stuff animate on load
+    japanChart.appear(1000, 100);
 
-
-// Make stuff animate on load
-japanChart.appear(1000, 100);
+}
 
 
 function closeJapanModal() {
