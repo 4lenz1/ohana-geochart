@@ -1,5 +1,4 @@
-
-export class Modal {
+class Modal {
     type = '';
     japanList = [];
 
@@ -173,7 +172,7 @@ export class Modal {
         avatar.style.borderWidth = '2px';
         avatar.setAttribute('alt', 'Avatar');
         const seed = +new Date() * index;
-        avatar.src = `https://avatars.dicebear.com/api/${avatarTypeList[avatarType]}/${seed}.svg`;
+        avatar.src = `https://avatars.dicebear.com/api/${avatarTypeList[avatarType]}/${seed % 17}.svg`;
 
         return avatar;
     }

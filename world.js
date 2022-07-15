@@ -1,4 +1,4 @@
-import { Modal } from "./modal.js";
+// import { Modal } from "./modal.js";
 
 document.addEventListener('DOMContentLoaded', () => {
     const instance = NiceSelect.bind(document.querySelector('#select-world'), { searchable: true });
