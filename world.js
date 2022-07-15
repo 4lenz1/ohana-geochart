@@ -4,11 +4,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const instance = NiceSelect.bind(document.querySelector('#select-world'), { searchable: true });
 })
 
-
+const worldModal = new Modal('world');
 document.getElementById('select-world').addEventListener('change', function () {
 
-    const modal = new Modal('world');
-    modal.modal();
+
+    worldModal.modal();
 
     let dataItem = polygonSeries.getDataItemById(this.value);
     polygonSeries.zoomToDataItem(dataItem);
@@ -82,11 +82,7 @@ function initialWorldMap() {
         }
         if (target.get("active")) {
             polygonSeries.zoomToDataItem(target.dataItem);
-
-            const modal = new Modal('world');
-            modal.modal(target.dataItem.dataContext.id);
-
-            // createWorldModal(target.dataItem.dataContext.id);
+            worldModal.modal(target.dataItem.dataContext.id);
         }
         else {
             chart.goHome();
