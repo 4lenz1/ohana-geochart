@@ -1,3 +1,7 @@
 {
-    "type": "module"
-  }
+  "name": "ohana-geochart",
+  "lockfileVersion": 2,
+  "requires": true,
+  "packages": {},
+  "type": "module"
+}
