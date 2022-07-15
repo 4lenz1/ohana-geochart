@@ -3,5 +3,8 @@
   "lockfileVersion": 2,
   "requires": true,
   "packages": {},
+  "scripts": {
+    "install": "npm i "
+  },
   "type": "module"
 }
