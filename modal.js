@@ -197,7 +197,9 @@ export class Modal {
         navButton.style.width = '40%';
         navButton.style.borderRadius = '10px';
         navButton.style.marginTop = '5px';
-        navButton.style.marginBottom = '10px'
+        navButton.style.marginBottom = '10px';
+        navButton.style.backgroundColor = '#59C28E';
+        navButton.style.borderWidth = '0px'
         navButton.innerText = this.generateButtonInfo(code);
         navButton.onclick = () => {
             window.location.href = this.generateButtonUrl(code);
