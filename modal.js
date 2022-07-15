@@ -1,7 +1,7 @@
 class Modal {
     type = '';
     japanList = [];
-
+    avatarNumber = 7;
     constructor(type) {
         this.type = type;
         console.log('type', type);
@@ -27,13 +27,19 @@ class Modal {
             const flag = this.generateFlagEl(region);
             document.querySelector('#modal-flag').replaceWith(flag);
 
+            // update button
             const button = this.generateButtonEl(region);
             document.querySelector('#nav-button').replaceWith(button);
 
             //update talk number 
-
             const talk = this.generateTalk(Math.floor(Math.random() * 100))
             document.querySelector('#modal-talk').replaceWith(talk);
+
+            // update avatar
+            for (var i = 0; i < this.avatarNumber; i++) {
+                const avatar = this.generateAvatar(i);
+                document.querySelector('#avatar-' + i).replaceWith(avatar);
+            }
 
             const modalEl = new bootstrap.Modal(checkModal);
             modalEl.show();
@@ -115,7 +121,7 @@ class Modal {
         bodyContainer.appendChild(buttonRow);
 
         //generate avatar 
-        for (var i = 0; i < 7; i++) {
+        for (var i = 0; i < this.avatarNumber; i++) {
             const avatar = this.generateAvatar(i);
             bodyContainer.appendChild(avatar);
         }
@@ -164,6 +170,7 @@ class Modal {
         const avatar = document.createElement('img');
         avatar.classLis = "rounded-circle shadow-4";
         avatar.classLis = "rounded-circle";
+        avatar.id = `avatar-${index}`;
         avatar.style.width = '50px';
         avatar.style.borderRadius = '50%';
         avatar.style.margin = '0px 5px 0px 5px';
@@ -172,7 +179,7 @@ class Modal {
         avatar.style.borderWidth = '2px';
         avatar.setAttribute('alt', 'Avatar');
         const seed = +new Date() * index;
-        avatar.src = `https://avatars.dicebear.com/api/${avatarTypeList[avatarType]}/${seed % 17}.svg`;
+        avatar.src = `https://avatars.dicebear.com/api/${avatarTypeList[avatarType]}/${seed % 300}.svg`;
 
         return avatar;
     }
