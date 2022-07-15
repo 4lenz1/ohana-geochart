@@ -72,8 +72,8 @@ class Modal {
         content.className = 'modal-content';
 
         const header = document.createElement('div');
-        header.classList = 'modal-header text-center row';
-        header.style.backgroundColor = '#ebf7fe';
+        header.classList = 'modal-header text-center row modal-custom';
+
 
         //TODO: disable temp
         // const closeBtn = document.createElement('button');
@@ -88,8 +88,7 @@ class Modal {
         const subTitle = this.generateTitleEl(region, 'modal-subtitle', 'p');
 
         const body = document.createElement('body')
-        body.className = 'modal-body';
-        body.style.backgroundColor = '#ebf7fe'
+        body.className = 'modal-body modal-custom';
 
 
 
@@ -247,7 +246,7 @@ class Modal {
         if (this.type === 'world') {
 
             console.log('code', code);
-            return `https://hontomo.jp/talkJapan?areacode=22`;
+            return `https://hontomo.jp/talkWorld?areacode=22`;
 
         } else {
             const areaCode = code.split('-')[1];
