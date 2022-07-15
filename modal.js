@@ -2,9 +2,10 @@
 export class Modal {
     type = '';
     japanList = [];
+
     constructor(type) {
         this.type = type;
-
+        console.log('type', type);
         fetch("japan.json")
             .then(response => response.json())
             .then((json) => {
@@ -18,6 +19,22 @@ export class Modal {
     modal(region) {
         const checkModal = document.querySelector('#modal');
         if (checkModal) {
+            // update modal title  
+            const name = this.generateTitleText(region);
+
+            document.querySelector('#modal-title').innerHTML = name.english + ' ' + name.japanese;
+
+
+            // update flag 
+            document.querySelector('#modal-flag').src = this.generateFlagSrc(region);
+
+            const button = document.querySelector('#nav-button');
+            button.onclick = () => {
+                window.location.href = this.generateButtonUrl(code);
+            }
+            button.innerHTML = this.generateButtonInfo(region);
+
+
             const modalEl = new bootstrap.Modal(checkModal);
             modalEl.show();
         } else {
@@ -31,7 +48,7 @@ export class Modal {
 
     }
     createModal(region) {
-        console.log('create modal')
+        console.log('create modal',)
 
         const modal = document
             .createElement('div');
@@ -61,7 +78,7 @@ export class Modal {
         closeBtn.setAttribute('aria-label', 'Close');
         closeBtn.onclick = this.closeModal;
 
-        const title = this.generateTitle(region);
+        const title = this.generateTitleEl(region);
 
 
         const body = document.createElement('body')
@@ -78,19 +95,20 @@ export class Modal {
 
 
         // generate flag
-        const flag = this.generateFlag(region);
+        const flag = this.generateFlagEl(region);
         bodyContainer.appendChild(flag);
 
+
+
+        // generate button
+        const navButton = this.generateButtonEl(region);
+        bodyContainer.appendChild(navButton);
 
         //generate avatar 
         for (var i = 0; i < 5; i++) {
             const avatar = this.generateAvatar(i);
             bodyContainer.appendChild(avatar);
         }
-        // generate button
-        const navButton = this.generateButton(region);
-        bodyContainer.appendChild(navButton);
-
 
         body.appendChild(bodyContainer);
 
@@ -136,62 +154,104 @@ export class Modal {
         return avatar;
     }
 
-    generateFlag(code) {
-        console.log('region',code);
+    generateFlagEl(code) {
+        console.log('region', code);
         const flag = document.createElement('img');
-        if (this.type === 'world') {
-            flag.src = `https://flagcdn.com/${code.toLowerCase()}.svg`;
-        } else {
+        flag.id = 'modal-flag';
 
-            const region = this.japanList.find(x => x.code === code);
-            flag.src = `japan_flag/Flag_of_${region.english}_Prefecture.svg`;
-        }
-
+        flag.src = this.generateFlagSrc(code);
         flag.style.marginBottom = '10px';
         flag.style.width = '100%';
+        flag.style.maxHeight = '250px';
+        flag.style.objectFit = 'contain';
 
         return flag;
     }
 
-    generateButton(code) {
+    generateFlagSrc(code) {
+        if (this.type === 'world') {
+            return `https://flagcdn.com/${code.toLowerCase()}.svg`;
+        } else {
+            const areaCode = code.split('-')[1];
+            return `https://hontomo.jp/images/japanmap/${+areaCode}.png`;
+
+        }
+    }
+
+    generateButtonEl(code) {
         const navButton = document.createElement('button');
         navButton.type = 'button';
+        navButton.id = 'nav-button'
         navButton.classList = 'btn btn-primary w-100';
         navButton.style.borderRadius = '25px';
         navButton.style.marginTop = '5px';
-
-
-        if (this.type === 'world') {
-
-            const intl = new Intl.DisplayNames(['ja-jp'], { type: 'region' })
-            // TODO: only for world now
-            navButton.innerText = intl.of(code) + 'のページへ';
-        } else {
-            const region = this.japanList.find(x => x.code === code);
-            navButton.innerText = region.name + 'のページへ';;
+        navButton.style.marginBottom = '10px'
+        navButton.innerText = this.generateButtonInfo(code);
+        navButton.onclick = () => {
+            window.location.href = this.generateButtonUrl(code);
         }
+
         return navButton
     }
 
+    generateButtonInfo(code) {
+        if (this.type === 'world') {
+            const intl = new Intl.DisplayNames(['ja-jp'], { type: 'region' })
+            // return intl.of(code) + 'のページへ';
+            return 'ふるさとーく';
+        } else {
+            const region = this.japanList.find(x => x.code === code);
+            return 'ふるさとーく';
 
-    generateTitle(code) {
+            // return region.name + 'のページへ';
+        }
+    }
+
+    generateButtonUrl(code) {
+        if (this.type === 'world') {
+
+            console.log('code', code);
+            return `https://hontomo.jp/talkJapan?areacode=22`;
+
+        } else {
+            const areaCode = code.split('-')[1];
+            return `https://hontomo.jp/talkJapan?areacode=${+areaCode}`;
+
+        }
+    }
+
+
+
+    generateTitleEl(code) {
         const title = document.createElement('h5');
         title.classList = 'modal-title w-100';
         title.style.textAlign = 'center'
-        title.id = 'title';
-
-        if (this.type === 'world') {
-            const intl = new Intl.DisplayNames(['ja-jp'], { type: 'region' })
-            title.innerText = intl.of(code)
-        } else {
-            const region = this.japanList.find(x => x.code === code);
-
-            console.log('region', region, code, this.japanList);
-            title.innerText = region.name;
-        }
-
+        title.id = 'modal-title';
+        const name = this.generateTitleText(code);
+        console.log(name)
+        title.innerText = name.japanese + '  ' + name.english;
 
         return title
+    }
+
+
+    generateTitleText(code) {
+        console.log('code', code)
+        if (this.type === 'world') {
+            const japanese = new Intl.DisplayNames(['ja-jp'], { type: 'region' });
+            const english = new Intl.DisplayNames(['en'], { type: 'region' });
+
+            const data = {
+                'japanese': japanese.of(code),
+                'english': english.of(code)
+            }
+            return data;
+        } else {
+            const region = this.japanList.find(x => x.code === code);
+            return { 'japanese': region.name, 'english': region.english };
+
+            // return region.name;
+        }
     }
 
     closeModal() {

@@ -8,7 +8,7 @@ const worldModal = new Modal('world');
 document.getElementById('select-world').addEventListener('change', function () {
 
 
-    worldModal.modal();
+    worldModal.modal(this.value);
 
     let dataItem = polygonSeries.getDataItemById(this.value);
     polygonSeries.zoomToDataItem(dataItem);
@@ -17,16 +17,9 @@ document.getElementById('select-world').addEventListener('change', function () {
 
 
 
-
-
-
-
-
-
 document.addEventListener("DOMContentLoaded", () => {
     initialWorldMap();
 });
-
 var polygonSeries;
 
 
@@ -82,6 +75,8 @@ function initialWorldMap() {
         }
         if (target.get("active")) {
             polygonSeries.zoomToDataItem(target.dataItem);
+
+
             worldModal.modal(target.dataItem.dataContext.id);
         }
         else {

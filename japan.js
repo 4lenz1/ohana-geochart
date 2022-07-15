@@ -1,13 +1,13 @@
 import { Modal } from "./modal.js";
 
 var japanList = [];
-const japanModal = new Modal('japan');
 fetch("japan.json")
     .then(response => response.json())
     .then((json) => {
         japanList = json;
         createSelectJapan();
     });
+    const japanModal = new Modal('japan');
 
 document.getElementById('select-japan').addEventListener('change', function () {
     // createJapanModal(this.value);
@@ -103,8 +103,9 @@ function initialJapanMap() {
         if (target.get("active")) {
             // createJapanModal(target.dataItem.dataContext.id);
             // const modal = new Modal('japan');
+
             japanModal.modal(target.dataItem.dataContext.id);
-        
+
 
 
             japanPolygonSeries.zoomToDataItem(target.dataItem);
@@ -128,13 +129,5 @@ function initialJapanMap() {
 
     // Make stuff animate on load
     japanChart.appear(1000, 100);
-
-}
-
-
-function closeJapanModal() {
-    const modal = new bootstrap.Modal(document.getElementById('modal'));
-    modal.hide();
-    // document.querySelector('#modal').remove();
 
 }
