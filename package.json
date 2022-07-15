@@ -4,7 +4,7 @@
   "requires": true,
   "packages": {},
   "scripts": {
-    "install": "npm i "
+    "install": "npm install"
   },
   "type": "module"
 }
