@@ -46,20 +46,27 @@ function initialWorldMap() {
     }));
 
 
+
     // Create main polygon series for countries
     // https://www.amcharts.com/docs/v5/charts/map-chart/map-polygon-series/
     polygonSeries = chart.series.push(am5map.MapPolygonSeries.new(root, {
         geoJSON: am5geodata_worldLow,
         geodataNames: am5geodata_lang_JA,
-
         exclude: ["AQ"]
     }));
 
     polygonSeries.mapPolygons.template.setAll({
         tooltipText: "{name}",
         toggleKey: "active",
-        interactive: true
+        interactive: true,
+        stroke: am5.color(0xffffff),
+
+        // #23A665
+        fill: am5.color(0x23A665),
+        strokeWidth: 1,
     });
+
+
 
     polygonSeries.mapPolygons.template.states.create("hover", {
         fill: root.interfaceColors.get("primaryButtonHover")

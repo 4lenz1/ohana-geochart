@@ -83,7 +83,12 @@ function initialJapanMap() {
     japanPolygonSeries.mapPolygons.template.setAll({
         tooltipText: "{name}",
         toggleKey: "active",
-        interactive: true
+        interactive: true,
+        stroke: am5.color(0xffffff),
+
+        // #89B92A
+        fill: am5.color(0x89B92A),
+        strokeWidth: 1,
     });
     japanPolygonSeries.mapPolygons.template.states.create("hover", {
         fill: japanRoot.interfaceColors.get("primaryButtonHover")
